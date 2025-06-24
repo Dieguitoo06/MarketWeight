@@ -1,3 +1,4 @@
+-- Active: 1750775323683@@127.0.0.1@3306@5to_marketweight
 Use 5to_MarketWeight
 
 CALL AltaCriptoMoneda(100.50, 100, 'Bitcoin');
