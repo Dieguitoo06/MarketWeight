@@ -74,4 +74,39 @@ public class RepoMonedaTest : TestBase
 
         Assert.NotEmpty(monedas);
     }
+
+    [Fact]
+    public async Task CrearMonedaOKAsync()
+    {
+        Moneda monedaPepe = new Moneda
+        {
+            Precio = 10m,
+            Cantidad = 2m,
+            Nombre = "pepe"
+        };
+        Moneda monedaVirgo = new Moneda
+        {
+            Precio = 300m,
+            Cantidad = 5000m,
+            Nombre = "VirgoCoin"
+        };
+        await _repo.AltaAsync(monedaPepe);
+        await _repo.AltaAsync(monedaVirgo);
+    }
+
+    [Fact]
+    public async Task TraerOKAsync()
+    {
+        var monedas = await _repo.ObtenerAsync();
+        Assert.NotEmpty(monedas);
+        Assert.Contains(monedas,
+            m => m.Nombre == "Bitcoin" || m.Nombre == "pepe"  || m.Nombre == "dogeCoin" || m.Nombre == "VirgoCoin");
+    }
+
+    [Fact]
+    public async Task ObtenerConCondicionOKAsync()
+    {
+        var monedas = await _repo.ObtenerConCondicionAsync("precio >= 100");
+        Assert.NotEmpty(monedas);
+    }
 }

@@ -18,4 +18,13 @@ public class RepoHistorialTest : TestBase
         Assert.Contains(historiales,
             h => h.IdUsuario == 2);
     }
+
+    [Fact]
+    public async Task TraerOKAsync()
+    {
+        var historiales = await _repo.ObtenerAsync();
+        Assert.NotEmpty(historiales);
+        Assert.Contains(historiales,
+            h => h.IdUsuario == 2);
+    }
 }
