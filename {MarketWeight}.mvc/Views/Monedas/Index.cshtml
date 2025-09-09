@@ -1,0 +1,29 @@
+@model IEnumerable<_MarketWeight_.mvc.Models.MonedaDto>
+
+@{
+    ViewData["Title"] = "Monedas";
+}
+
+<h1>Monedas</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var m in Model)
+    {
+        <tr>
+            <td>@m.Nombre</td>
+            <td>@m.Precio</td>
+            <td>@m.Cantidad</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

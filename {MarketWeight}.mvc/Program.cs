@@ -1,12 +1,12 @@
-using MarketWeight;
-using MarketWeight.Ado.Dapper;
-using MarketWeight.Core;
-using MarketWeight.Core.Persistencia;
-using MinimalAPI.Funcionalidades;
-using MySqlConnector;
 using System.Data;
+using MarketWeight.Ado.Dapper;
+using MarketWeight.Core.Persistencia;
+using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
@@ -21,23 +21,25 @@ builder.Services.AddScoped<IRepoMoneda, RepoMoneda>();
 builder.Services.AddScoped<IRepoHistorial, RepoHistorial>();
 
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
 
-app.MapUsuariosEndpoints();
-app.MapMonedasEndpoints();
-app.MapHistorialEndpoints();
-app.MapUsuariosMonedasEndpoints();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+app.UseRouting();
 
-app.MapGet("/", () => "Hello World!");
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

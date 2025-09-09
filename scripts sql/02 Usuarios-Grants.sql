@@ -6,6 +6,7 @@ USE 5to_MarketWeight
 CREATE USER 'papuSupremo'@'127.0.0.1' IDENTIFIED BY 'passPapuSupremo1#';
 CREATE USER 'usuario'@'%' IDENTIFIED BY 'passUsuario1#';
 
+
 /*GRANTS*/
 GRANT SELECT, UPDATE, INSERT ON 5to_MarketWeight.* TO 'papuSupremo'@'localhost';
 GRANT SELECT, UPDATE(cantidad) ON 5to_MarketWeight.Moneda TO 'usuario'@'%';
