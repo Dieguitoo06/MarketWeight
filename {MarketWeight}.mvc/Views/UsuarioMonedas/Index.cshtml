@@ -1,0 +1,33 @@
+@model IEnumerable<_MarketWeight_.mvc.Models.UsuarioMonedaDto>
+
+@{
+    ViewData["Title"] = "Billetera";
+}
+
+<h1>Billetera</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Moneda</th>
+            <th>Cantidad</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var r in Model)
+    {
+        <tr>
+            <td>@r.IdUsuario</td>
+            <td>@r.IdMoneda</td>
+            <td>@r.Cantidad</td>
+            <td>
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-idUsuario="@r.IdUsuario" asp-route-idMoneda="@r.IdMoneda">Detalle</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

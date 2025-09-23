@@ -59,28 +59,28 @@ public class RepoHistorial : RepoGenerico, IRepoHistorial
 
     public Historial? Detalle(uint indiceABuscar)
     {
-        var consulta = $"SELECT * FROM Moneda WHERE idMoneda = {indiceABuscar}";
+        var consulta = $"SELECT * FROM Historial WHERE idHistorial = {indiceABuscar}";
         var registro = Conexion.QueryFirstOrDefault<Historial>(consulta);
         return registro;
     }
 
     public async Task<Historial?> DetalleAsync(uint indiceABuscar)
     {
-        var consulta = $"SELECT * FROM Moneda WHERE idMoneda = {indiceABuscar}";
+        var consulta = $"SELECT * FROM Historial WHERE idHistorial = {indiceABuscar}";
         var registro = await Conexion.QueryFirstOrDefaultAsync<Historial>(consulta);
         return registro;
     }
 
     public IEnumerable<Historial> Obtener()
     {
-        var consulta = "SELECT * FROM Usuario";
+        var consulta = "SELECT * FROM Historial";
         var registros = Conexion.Query<Historial>(consulta);
         return registros;
     }
     
     public async Task<IEnumerable<Historial>> ObtenerAsync()
     {
-        var consulta = "SELECT * FROM Usuario";
+        var consulta = "SELECT * FROM Historial";
         var registros = await Conexion.QueryAsync<Historial>(consulta);
         return registros;
     }

@@ -6,12 +6,17 @@
 
 <h1>Monedas</h1>
 
+<p>
+    <a class="btn btn-primary" asp-action="Create">Nueva Moneda</a>
+    </p>
+
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Nombre</th>
             <th>Precio</th>
             <th>Cantidad</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +26,9 @@
             <td>@m.Nombre</td>
             <td>@m.Precio</td>
             <td>@m.Cantidad</td>
+            <td>
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@m.IdMoneda">Detalle</a>
+            </td>
         </tr>
     }
     </tbody>
