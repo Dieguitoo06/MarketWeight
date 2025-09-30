@@ -27,4 +27,32 @@
     <a class="btn btn-secondary" asp-action="Index">Volver</a>
 </p>
 
+@{
+    var billetera = ViewData["Billetera"] as List<MarketWeight.Core.UsuarioMoneda> ?? new();
+}
 
+<h2>Billetera</h2>
+@if (billetera.Count == 0)
+{
+    <p>No hay monedas en la billetera.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>IdMoneda</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in billetera)
+        {
+            <tr>
+                <td>@item.idMoneda</td>
+                <td>@item.Cantidad</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

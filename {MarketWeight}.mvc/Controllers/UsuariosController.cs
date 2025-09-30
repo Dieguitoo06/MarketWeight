@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using _MarketWeight_.mvc.Models;
 using MarketWeight.Core.Persistencia;
 using MarketWeight.Core;
 
 namespace _MarketWeight_.mvc.Controllers;
 
+[Authorize]
 public class UsuariosController : Controller
 {
     private readonly IRepoUsuario _repoUsuario;
@@ -31,7 +33,7 @@ public class UsuariosController : Controller
 
     public IActionResult Details(uint id)
     {
-        var usuario = _repoUsuario.Detalle(id);
+        var usuario = _repoUsuario.DetalleCompleto(id);
         if (usuario is null) return NotFound();
         var model = new UsuarioDto
         {
@@ -42,33 +44,13 @@ public class UsuariosController : Controller
             Password = string.Empty,
             Saldo = usuario.Saldo
         };
+        ViewData["Billetera"] = usuario.Billetera ?? new List<UsuarioMoneda>();
         return View(model);
     }
 
-    [HttpGet]
-    public IActionResult Create()
-    {
-        return View(new UsuarioDto());
-    }
+    // Crear usuario vía UI deshabilitado; los usuarios se crean por Register
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(UsuarioDto dto)
-    {
-        if (!ModelState.IsValid)
-            return View(dto);
-
-        var entity = new Usuario
-        {
-            Nombre = dto.Nombre,
-            Apellido = dto.Apellido,
-            Email = dto.Email,
-            Password = dto.Password,
-            Saldo = dto.Saldo
-        };
-        _repoUsuario.Alta(entity);
-        return RedirectToAction(nameof(Index));
-    }
+    // SeedWallet eliminado
 }
 
 

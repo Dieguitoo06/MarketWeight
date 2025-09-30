@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using _MarketWeight_.mvc.Models;
 using MarketWeight.Core.Persistencia;
 
 namespace _MarketWeight_.mvc.Controllers;
 
+[Authorize]
 public class HistorialesController : Controller
 {
     private readonly IRepoHistorial _repoHistorial;

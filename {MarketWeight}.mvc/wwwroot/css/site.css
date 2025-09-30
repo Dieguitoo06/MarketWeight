@@ -20,3 +20,120 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Minimalist professional theme */
+:root {
+  --bg: #0f172a;           /* slate-900 */
+  --panel: #111827;        /* gray-900 */
+  --text: #e5e7eb;         /* gray-200 */
+  --muted: #9ca3af;        /* gray-400 */
+  --primary: #3b82f6;      /* blue-500 */
+  --primary-contrast: #ffffff;
+  --border: #1f2937;       /* gray-800 */
+  --table-stripe: #0b1222; 
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.navbar.bg-white {
+  background-color: var(--panel) !important;
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: var(--text) !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .navbar-brand:hover {
+  color: var(--primary) !important;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-contrast);
+}
+
+.btn-outline-secondary {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--border);
+}
+
+.table {
+  color: var(--text);
+}
+
+.table thead th {
+  border-bottom-color: var(--border);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: var(--table-stripe);
+  color: var(--text);
+}
+
+.form-control, .form-select {
+  background-color: #0b1222;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.form-control::placeholder {
+  color: var(--muted);
+}
+
+.form-label { color: var(--muted); }
+
+.alert-info {
+  background-color: #0b3b6d;
+  color: #dbeafe;
+  border-color: #1d4ed8;
+}
+
+.box-shadow { box-shadow: 0 2px 12px rgba(0,0,0,0.35) !important; }
+
+footer.footer {
+  background-color: var(--panel);
+  color: var(--muted);
+}
+
+/* Layout wrapper */
+.mw-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Cards */
+.card {
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card h1, .card h2, .card h3 { margin-bottom: 16px; }
+
+/* Auth pages */
+.auth-wrapper {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card { width: 100%; max-width: 420px; }
+
+/* Headings */
+h1.display-4, h1, h2, h3 { color: var(--text); }
+
+/* Links */
+a { color: var(--primary); }
+a:hover { color: #60a5fa; }

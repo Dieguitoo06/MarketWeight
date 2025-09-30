@@ -2,11 +2,21 @@ using System.Data;
 using MarketWeight.Ado.Dapper;
 using MarketWeight.Core.Persistencia;
 using MySqlConnector;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Login";
+        options.SlidingExpiration = true;
+    });
 
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
@@ -36,6 +46,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

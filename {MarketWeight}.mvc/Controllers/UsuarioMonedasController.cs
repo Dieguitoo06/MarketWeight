@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using _MarketWeight_.mvc.Models;
 using MarketWeight.Core.Persistencia;
 using MarketWeight.Core;
 
 namespace _MarketWeight_.mvc.Controllers;
 
+[Authorize]
 public class UsuarioMonedasController : Controller
 {
     private readonly IRepoUsuario _repoUsuario;
