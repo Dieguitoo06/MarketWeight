@@ -1,0 +1,67 @@
+@{
+    ViewData["Title"] = "Comprar";
+    var monedas = ViewData["Monedas"] as List<MarketWeight.Core.Moneda> ?? new();
+}
+
+<div class="card">
+    <h1 class="h4 mb-3">Comprar Moneda</h1>
+    @if (TempData["Message"] is string msg)
+    {
+        <div class="alert alert-info">@msg</div>
+    }
+    <form asp-action="Buy" method="post" class="row gy-2 gx-2 align-items-end" id="buyForm">
+        @Html.AntiForgeryToken()
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="idMoneda">Moneda</label>
+            <select class="form-select" id="idMoneda" name="idMoneda">
+                @foreach (var m in monedas)
+                {
+                    <option value="@m.IdMoneda" data-precio="@m.Precio" data-stock="@m.Cantidad">@m.Nombre</option>
+                }
+            </select>
+        </div>
+        <div class="col-12 col-md-3">
+            <label class="form-label" for="cantidad">Cantidad</label>
+            <input class="form-control" id="cantidad" name="cantidad" type="number" step="1" min="1" placeholder="1" />
+        </div>
+        <div class="col-12 col-md-3">
+            <button type="submit" class="btn btn-primary w-100">Agregar a billetera</button>
+        </div>
+    </form>
+    <div class="mt-3">
+        <div class="row g-2">
+            <div class="col-12 col-md-4"><strong>Precio:</strong> <span id="precioSel">-</span></div>
+            <div class="col-12 col-md-4"><strong>Stock disponible:</strong> <span id="stockSel">-</span></div>
+            <div class="col-12 col-md-4"><strong>Total estimado:</strong> <span id="totalSel">-</span></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    (function(){
+        const select = document.getElementById('idMoneda');
+        const qty = document.getElementById('cantidad');
+        const precioSpan = document.getElementById('precioSel');
+        const stockSpan = document.getElementById('stockSel');
+        const totalSpan = document.getElementById('totalSel');
+
+        function updateInfo() {
+            const opt = select.options[select.selectedIndex];
+            if (!opt) return;
+            const precio = parseFloat(opt.getAttribute('data-precio')) || 0;
+            const stock = parseFloat(opt.getAttribute('data-stock')) || 0;
+            const cantidad = parseFloat(qty.value) || 0;
+            precioSpan.textContent = precio.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            stockSpan.textContent = stock.toLocaleString();
+            totalSpan.textContent = (precio * cantidad).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        select.addEventListener('change', updateInfo);
+        qty.addEventListener('input', updateInfo);
+        updateInfo();
+    })();
+</script>
+}
+
+

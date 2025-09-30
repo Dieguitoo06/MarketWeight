@@ -30,7 +30,18 @@ body {
   --primary: #3b82f6;      /* blue-500 */
   --primary-contrast: #ffffff;
   --border: #1f2937;       /* gray-800 */
-  --table-stripe: #0b1222; 
+  --table-stripe: #0b1222;
+}
+
+[data-theme="light"] {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --text: #0b1222;
+  --muted: #4b5563;
+  --primary: #2563eb;
+  --primary-contrast: #ffffff;
+  --border: #e5e7eb;
+  --table-stripe: #f8fafc;
 }
 
 body {
@@ -50,6 +61,17 @@ body {
 .navbar .nav-link:hover,
 .navbar .navbar-brand:hover {
   color: var(--primary) !important;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  background: transparent;
 }
 
 .btn-primary {
@@ -120,6 +142,21 @@ footer.footer {
 }
 
 .card h1, .card h2, .card h3 { margin-bottom: 16px; }
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+}
 
 /* Auth pages */
 .auth-wrapper {

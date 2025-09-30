@@ -39,7 +39,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public IEnumerable<Usuario> Obtener()
     {
-        var consulta = "SELECT * FROM Usuario";
+        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario";
         var usuarios = Conexion.Query<Usuario>(consulta);
         return usuarios;
     }
@@ -53,9 +53,9 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public Usuario? Detalle(uint indiceABuscar)
     {
-        var consulta = $"SELECT * FROM Usuario WHERE idUsuario = {indiceABuscar}";
+        var consulta = $"SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario WHERE idUsuario = {indiceABuscar}";
         var usuarios = Conexion.QueryFirstOrDefault<Usuario>(consulta);
-
+        
         return usuarios;
     }
 
@@ -191,7 +191,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public async Task<IEnumerable<Usuario>> ObtenerAsync()
     {
-        var consulta = "SELECT * FROM Usuario";
+        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario";
         var usuarios = await Conexion.QueryAsync<Usuario>(consulta);
         return usuarios;
     }
@@ -205,7 +205,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public async Task<Usuario?> DetalleAsync(uint indiceABuscar)
     {
-        var consulta = $"SELECT * FROM Usuario WHERE idUsuario = {indiceABuscar}";
+        var consulta = $"SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario WHERE idUsuario = {indiceABuscar}";
         var usuario = await Conexion.QueryFirstOrDefaultAsync<Usuario>(consulta);
         return usuario;
     }

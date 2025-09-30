@@ -4,11 +4,12 @@
     ViewData["Title"] = "Monedas";
 }
 
-<h1>Monedas</h1>
+<div class="section-title">
+    <h1 class="h4 m-0">Monedas</h1>
+    <span class="pill">@Model.Count() registros</span>
+  </div>
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Nueva Moneda</a>
-    </p>
+@* Crear moneda permanece si lo necesitas *@
 
 <table class="table table-striped">
     <thead>

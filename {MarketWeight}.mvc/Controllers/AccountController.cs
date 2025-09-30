@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using MarketWeight.Core.Persistencia;
 
 namespace _MarketWeight_.mvc.Controllers;
@@ -34,20 +35,42 @@ public class AccountController : Controller
             return View();
         }
 
-        var usuario = _repoUsuario.Obtener()
-            .FirstOrDefault(u => u.Email == u.Email && u.Password == u.Password);
-
-        if (usuario is null)
+        var emailNorm = email.Trim();
+        var passNorm = password.Trim();
+        // Hash para coincidir con almacenamiento CHAR(64) si se usa SHA-256
+        string Hash(string s)
+        {
+            using var sha = SHA256.Create();
+            var bytes = System.Text.Encoding.UTF8.GetBytes(s);
+            var hash = sha.ComputeHash(bytes);
+            return string.Concat(hash.Select(b => b.ToString("x2")));
+        }
+        var passHashed = Hash(passNorm);
+        var usuarios = _repoUsuario.Obtener();
+        var usuarioPorEmail = usuarios.FirstOrDefault(u => string.Equals(u.Email?.Trim(), emailNorm, StringComparison.OrdinalIgnoreCase));
+        if (usuarioPorEmail is null)
+        {
+            ModelState.AddModelError(string.Empty, "Email o contraseña incorrectos");
+            return View();
+        }
+        // Aceptar tanto texto plano (legado) como hash SHA-256 (64 chars)
+        var stored = usuarioPorEmail.Password?.Trim();
+        var ok = string.Equals(stored, passNorm, StringComparison.Ordinal)
+                 || string.Equals(stored, passHashed, StringComparison.OrdinalIgnoreCase);
+        if (!ok)
         {
             ModelState.AddModelError(string.Empty, "Email o contraseña incorrectos");
             return View();
         }
 
+        // Asegura que no quede sesión previa
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-            new Claim(ClaimTypes.Name, $"{usuario.Nombre} {usuario.Apellido}"),
-            new Claim(ClaimTypes.Email, usuario.Email)
+            new Claim(ClaimTypes.NameIdentifier, usuarioPorEmail.IdUsuario.ToString()),
+            new Claim(ClaimTypes.Name, $"{usuarioPorEmail.Nombre} {usuarioPorEmail.Apellido}"),
+            new Claim(ClaimTypes.Email, usuarioPorEmail.Email)
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -85,18 +108,26 @@ public class AccountController : Controller
             return View();
         }
         // Verificar duplicado por email
-        var yaExiste = _repoUsuario.Obtener().Any(u => u.Email == email);
+        var yaExiste = _repoUsuario.Obtener().Any(u => string.Equals(u.Email?.Trim(), email.Trim(), StringComparison.OrdinalIgnoreCase));
         if (yaExiste)
         {
             ModelState.AddModelError(string.Empty, "El email ya está registrado");
             return View();
+        }
+        // Hash de password en SHA-256 hex para almacenar 64 chars
+        string Hash(string s)
+        {
+            using var sha = SHA256.Create();
+            var bytes = System.Text.Encoding.UTF8.GetBytes(s.Trim());
+            var hash = sha.ComputeHash(bytes);
+            return string.Concat(hash.Select(b => b.ToString("x2")));
         }
         _repoUsuario.Alta(new MarketWeight.Core.Usuario
         {
             Nombre = nombre,
             Apellido = apellido,
             Email = email,
-            Password = password,
+            Password = Hash(password),
             Saldo = 0
         });
         TempData["Message"] = "Cuenta creada. Inicie sesión.";

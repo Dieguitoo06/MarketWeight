@@ -29,16 +29,28 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Monedas" asp-action="Index">Monedas</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Monedas" asp-action="Buy">Comprar</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Ingresar">Ingresar Dinero</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Historiales" asp-action="Index">Historial</a>
                         </li>
                         @* Billetera se mostrará en Detalle de Usuario, escondemos el link directo *@
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item me-2">
+                            <button id="themeToggle" class="theme-toggle">Tema</button>
+                        </li>
                         @if (User?.Identity?.IsAuthenticated ?? false)
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Me">Mi Perfil</a>
+                            </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
@@ -76,6 +88,23 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        (function(){
+            const key = 'mw-theme';
+            const btn = document.getElementById('themeToggle');
+            function apply(theme){ document.documentElement.setAttribute('data-theme', theme); }
+            function current(){ return document.documentElement.getAttribute('data-theme') || 'dark'; }
+            const saved = localStorage.getItem(key) || 'dark';
+            apply(saved);
+            if (btn){
+                btn.addEventListener('click', function(){
+                    const next = current() === 'dark' ? 'light' : 'dark';
+                    apply(next);
+                    localStorage.setItem(key, next);
+                });
+            }
+        })();
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

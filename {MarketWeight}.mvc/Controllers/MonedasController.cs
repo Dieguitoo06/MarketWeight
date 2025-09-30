@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using _MarketWeight_.mvc.Models;
 using MarketWeight.Core.Persistencia;
+using System.Security.Claims;
 using MarketWeight.Core;
 
 namespace _MarketWeight_.mvc.Controllers;
@@ -10,10 +11,12 @@ namespace _MarketWeight_.mvc.Controllers;
 public class MonedasController : Controller
 {
     private readonly IRepoMoneda _repoMoneda;
+    private readonly IRepoUsuario _repoUsuario;
 
-    public MonedasController(IRepoMoneda repoMoneda)
+    public MonedasController(IRepoMoneda repoMoneda, IRepoUsuario repoUsuario)
     {
         _repoMoneda = repoMoneda;
+        _repoUsuario = repoUsuario;
     }
 
     public IActionResult Index()
@@ -41,6 +44,55 @@ public class MonedasController : Controller
             Cantidad = moneda.Cantidad
         };
         return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult Buy()
+    {
+        var monedas = _repoMoneda.Obtener();
+        ViewData["Monedas"] = monedas.ToList();
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Buy(uint idMoneda, decimal cantidad)
+    {
+        if (cantidad <= 0)
+        {
+            TempData["Message"] = "Cantidad inválida";
+            return RedirectToAction(nameof(Buy));
+        }
+
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userIdClaim) || !uint.TryParse(userIdClaim, out var userId))
+        {
+            return RedirectToAction("Login", "Account", new { returnUrl = Url.Action(nameof(Buy)) });
+        }
+
+        var moneda = _repoMoneda.Detalle(idMoneda);
+        if (moneda is null)
+        {
+            return NotFound();
+        }
+
+        if (cantidad > moneda.Cantidad)
+        {
+            TempData["Message"] = "No hay stock suficiente de la moneda seleccionada";
+            return RedirectToAction(nameof(Buy));
+        }
+
+        try
+        {
+            _repoUsuario.Compra(userId, cantidad, idMoneda);
+            TempData["Message"] = "Compra realizada y agregada a tu billetera";
+            return RedirectToAction("Details", "Usuarios", new { id = userId });
+        }
+        catch (Exception ex)
+        {
+            TempData["Message"] = $"Error al comprar: {ex.Message}";
+            return RedirectToAction(nameof(Buy));
+        }
     }
 
     [HttpGet]
