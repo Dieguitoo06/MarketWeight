@@ -22,6 +22,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         parametros.Add("@xapellido", usuario.Apellido);
         parametros.Add("@xemail", usuario.Email);
         parametros.Add("@xpass", usuario.Password);
+        parametros.Add("@xesAdmin", usuario.EsAdmin);
         try
         {
             Conexion.Execute("AltaUsuario", parametros);
@@ -39,7 +40,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public IEnumerable<Usuario> Obtener()
     {
-        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario";
+        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo, esAdmin AS EsAdmin FROM Usuario";
         var usuarios = Conexion.Query<Usuario>(consulta);
         return usuarios;
     }
@@ -53,7 +54,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public Usuario? Detalle(uint indiceABuscar)
     {
-        var consulta = $"SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario WHERE idUsuario = {indiceABuscar}";
+        var consulta = $"SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo, 0 AS EsAdmin FROM Usuario WHERE idUsuario = {indiceABuscar}";
         var usuarios = Conexion.QueryFirstOrDefault<Usuario>(consulta);
         
         return usuarios;
@@ -175,6 +176,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         parametros.Add("@xapellido", usuario.Apellido);
         parametros.Add("@xemail", usuario.Email);
         parametros.Add("@xpass", usuario.Password);
+        parametros.Add("@xesAdmin", usuario.EsAdmin);
         try
         {
             await Conexion.ExecuteAsync("AltaUsuario", parametros);
@@ -191,7 +193,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public async Task<IEnumerable<Usuario>> ObtenerAsync()
     {
-        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario";
+        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo, esAdmin AS EsAdmin FROM Usuario";
         var usuarios = await Conexion.QueryAsync<Usuario>(consulta);
         return usuarios;
     }
@@ -205,7 +207,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public async Task<Usuario?> DetalleAsync(uint indiceABuscar)
     {
-        var consulta = $"SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo FROM Usuario WHERE idUsuario = {indiceABuscar}";
+        var consulta = $"SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo, 0 AS EsAdmin FROM Usuario WHERE idUsuario = {indiceABuscar}";
         var usuario = await Conexion.QueryFirstOrDefaultAsync<Usuario>(consulta);
         return usuario;
     }
@@ -286,5 +288,33 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                 usuario.Transacciones = multi.Read<Historial>().ToList();
             return usuario;
         }
+    }
+
+    public void Modificar(Usuario elemento)
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@xidUsuario", elemento.IdUsuario);
+        parametros.Add("@xnombre", elemento.Nombre);
+        parametros.Add("@xapellido", elemento.Apellido);
+        parametros.Add("@xemail", elemento.Email);
+        parametros.Add("@xpass", elemento.Password);
+        parametros.Add("@xsaldo", elemento.Saldo);
+        parametros.Add("@xesAdmin", elemento.EsAdmin);
+
+        Conexion.Execute("UPDATE Usuario SET nombre = @xnombre, apellido = @xapellido, email = @xemail, pass = @xpass, saldo = @xsaldo, esAdmin = @xesAdmin WHERE idUsuario = @xidUsuario", parametros);
+    }
+
+    public async Task ModificarAsync(Usuario elemento)
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@xidUsuario", elemento.IdUsuario);
+        parametros.Add("@xnombre", elemento.Nombre);
+        parametros.Add("@xapellido", elemento.Apellido);
+        parametros.Add("@xemail", elemento.Email);
+        parametros.Add("@xpass", elemento.Password);
+        parametros.Add("@xsaldo", elemento.Saldo);
+        parametros.Add("@xesAdmin", elemento.EsAdmin);
+
+        await Conexion.ExecuteAsync("UPDATE Usuario SET nombre = @xnombre, apellido = @xapellido, email = @xemail, pass = @xpass, saldo = @xsaldo, esAdmin = @xesAdmin WHERE idUsuario = @xidUsuario", parametros);
     }
 }

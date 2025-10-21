@@ -70,7 +70,8 @@ public class AccountController : Controller
         {
             new Claim(ClaimTypes.NameIdentifier, usuarioPorEmail.IdUsuario.ToString()),
             new Claim(ClaimTypes.Name, $"{usuarioPorEmail.Nombre} {usuarioPorEmail.Apellido}"),
-            new Claim(ClaimTypes.Email, usuarioPorEmail.Email)
+            new Claim(ClaimTypes.Email, usuarioPorEmail.Email),
+            new Claim(ClaimTypes.Role, usuarioPorEmail.EsAdmin ? "Admin" : "User")
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -128,7 +129,8 @@ public class AccountController : Controller
             Apellido = apellido,
             Email = email,
             Password = Hash(password),
-            Saldo = 0
+            Saldo = 0,
+            EsAdmin = false
         });
         TempData["Message"] = "Cuenta creada. Inicie sesión.";
         return RedirectToAction("Login");

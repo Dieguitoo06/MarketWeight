@@ -64,7 +64,7 @@ public class MonedasController : Controller
             return RedirectToAction(nameof(Buy));
         }
 
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrWhiteSpace(userIdClaim) || !uint.TryParse(userIdClaim, out var userId))
         {
             return RedirectToAction("Login", "Account", new { returnUrl = Url.Action(nameof(Buy)) });
@@ -96,6 +96,7 @@ public class MonedasController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {
         return View(new MonedaDto());
@@ -103,6 +104,7 @@ public class MonedasController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create(MonedaDto dto)
     {
         if (!ModelState.IsValid)

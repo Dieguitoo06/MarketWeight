@@ -7,9 +7,11 @@
 <div class="section-title">
     <h1 class="h4 m-0">Monedas</h1>
     <span class="pill">@Model.Count() registros</span>
-  </div>
-
-@* Crear moneda permanece si lo necesitas *@
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary btn-sm ms-2" asp-action="Create">Crear Moneda</a>
+    }
+</div>
 
 <table class="table table-striped">
     <thead>

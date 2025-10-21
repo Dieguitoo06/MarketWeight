@@ -6,7 +6,8 @@ public class Usuario
     public required string Apellido { get; set; }
     public required string Email { get; set; }
     public required string Password { get; set; }
-    public  decimal Saldo { get; set; }
+    public decimal Saldo { get; set; }
+    public bool EsAdmin { get; set; } = false;
     public List<Historial>? Transacciones { get; set; }
     public List<UsuarioMoneda>? Billetera { get; set; }
 }

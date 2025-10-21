@@ -27,7 +27,8 @@ public class UsuariosController : Controller
             Apellido = u.Apellido,
             Email = u.Email,
             Password = string.Empty,
-            Saldo = u.Saldo
+            Saldo = u.Saldo,
+            EsAdmin = u.EsAdmin
         }).ToList();
         return View(model);
     }
@@ -43,7 +44,8 @@ public class UsuariosController : Controller
             Apellido = usuario.Apellido,
             Email = usuario.Email,
             Password = string.Empty,
-            Saldo = usuario.Saldo
+            Saldo = usuario.Saldo,
+            EsAdmin = usuario.EsAdmin
         };
         ViewData["Billetera"] = usuario.Billetera ?? new List<UsuarioMoneda>();
         return View(model);
@@ -52,7 +54,7 @@ public class UsuariosController : Controller
     [HttpGet]
     public IActionResult Me()
     {
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrWhiteSpace(userIdClaim) || !uint.TryParse(userIdClaim, out var userId))
             return RedirectToAction("Login", "Account", new { returnUrl = Url.Action(nameof(Me)) });
 
@@ -64,7 +66,7 @@ public class UsuariosController : Controller
     [HttpGet]
     public IActionResult Ingresar()
     {
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrWhiteSpace(userIdClaim) || !uint.TryParse(userIdClaim, out var userId))
             return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("Ingresar") });
 
@@ -84,13 +86,37 @@ public class UsuariosController : Controller
             return RedirectToAction(nameof(Ingresar));
         }
 
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrWhiteSpace(userIdClaim) || !uint.TryParse(userIdClaim, out var userId))
             return RedirectToAction("Login", "Account", new { returnUrl = Url.Action(nameof(Ingresar)) });
 
         _repoUsuario.Ingreso(userId, monto);
         TempData["Message"] = "Saldo ingresado correctamente";
         return RedirectToAction("Details", new { id = userId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
+    public IActionResult ToggleAdmin(uint id)
+    {
+        var usuario = _repoUsuario.Detalle(id);
+        if (usuario is null) return NotFound();
+
+        // No permitir que un admin se quite a sí mismo los permisos
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (currentUserIdClaim != null && uint.TryParse(currentUserIdClaim, out var currentUserId) && currentUserId == id)
+        {
+            TempData["Message"] = "No puedes modificar tus propios permisos de administrador";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        usuario.EsAdmin = !usuario.EsAdmin;
+        _repoUsuario.Modificar(usuario);
+        
+        var message = usuario.EsAdmin ? "Usuario promovido a administrador" : "Usuario degradado a usuario normal";
+        TempData["Message"] = message;
+        return RedirectToAction(nameof(Details), new { id });
     }
     // SeedWallet eliminado
 }

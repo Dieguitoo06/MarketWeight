@@ -19,6 +19,8 @@ public class UsuarioDto
     public string Password { get; set; } = string.Empty;
 
     public decimal Saldo { get; set; }
+    
+    public bool EsAdmin { get; set; } = false;
 }
 
 

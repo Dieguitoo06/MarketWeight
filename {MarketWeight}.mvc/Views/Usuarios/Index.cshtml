@@ -18,6 +18,7 @@
             <th>Apellido</th>
             <th>Email</th>
             <th>Saldo</th>
+            <th>Rol</th>
             <th></th>
         </tr>
     </thead>
@@ -29,6 +30,16 @@
             <td>@u.Apellido</td>
             <td>@u.Email</td>
             <td>@u.Saldo</td>
+            <td>
+                @if (u.EsAdmin)
+                {
+                    <span class="badge bg-danger">Admin</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Usuario</span>
+                }
+            </td>
             <td>
                 <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@u.IdUsuario">Detalle</a>
             </td>
