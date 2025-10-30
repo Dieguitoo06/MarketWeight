@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `Usuario` (
   `email` VARCHAR(45) NOT NULL,
   `pass` CHAR(64) NOT NULL,
   `saldo` DECIMAL(20,10) NOT NULL,
+  `esAdmin` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`idUsuario`),
   UNIQUE INDEX `idUsuario_UNIQUE` (`idUsuario` ASC) VISIBLE)
 ENGINE = InnoDB;

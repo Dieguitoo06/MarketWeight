@@ -9,11 +9,12 @@ BEGIN
            VALUES(xprecio, xcantidad, xnombre);
 END $$
 
+DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaUsuario $$
-CREATE PROCEDURE `AltaUsuario`(xnombre VARCHAR(45), xapellido  VARCHAR(45), xemail  VARCHAR(45), xpass CHAR(64) )
+CREATE PROCEDURE `AltaUsuario`(xnombre VARCHAR(45), xapellido VARCHAR(45), xemail VARCHAR(45), xpass CHAR(64), xesAdmin BOOLEAN)
 BEGIN
-       INSERT INTO `Usuario` (nombre, apellido, email, pass, saldo)
-           VALUES(xnombre, xapellido, xemail, xpass, 0.0);
+    INSERT INTO `Usuario` (nombre, apellido, email, pass, saldo, esAdmin)
+        VALUES(xnombre, xapellido, xemail, xpass, 0.0, xesAdmin);
 END $$
 
 DROP PROCEDURE IF EXISTS ComprarMoneda $$
