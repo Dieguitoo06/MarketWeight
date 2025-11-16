@@ -24,7 +24,9 @@ builder.Services
         // Configuración de seguridad de la cookie
         options.Cookie.Name = "MarketWeight.Auth";
         options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        // Para presentaciones locales por HTTP puedes usar SameAsRequest temporalmente.
+        // En producción debe permanecer 'Always' con HTTPS.
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
     });
 
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");

@@ -72,7 +72,9 @@ public class UsuariosController : Controller
 
         var usuario = _repoUsuario.Detalle(userId);
         if (usuario is null) return NotFound();
-        ViewData["Saldo"] = usuario.Saldo;
+        
+        // Mostrar saldo actualizado
+        ViewData["Saldo"] = usuario.Saldo.ToString("N2");
         return View();
     }
 
@@ -92,7 +94,7 @@ public class UsuariosController : Controller
 
         _repoUsuario.Ingreso(userId, monto);
         TempData["Message"] = "Saldo ingresado correctamente";
-        return RedirectToAction("Details", new { id = userId });
+        return RedirectToAction(nameof(Ingresar));
     }
 
     [HttpPost]

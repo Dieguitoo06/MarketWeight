@@ -20,7 +20,7 @@
     <dd class="col-sm-10">@Model.Email</dd>
 
     <dt class="col-sm-2">Saldo</dt>
-    <dd class="col-sm-10">@Model.Saldo</dd>
+    <dd class="col-sm-10">@Model.Saldo.ToString("N2")</dd>
 
     <dt class="col-sm-2">Rol</dt>
     <dd class="col-sm-10">
@@ -74,7 +74,7 @@ else
                 <tr>
                     <td>@item.idMoneda</td>
                     <td>@item.Nombre</td>
-                    <td>@item.Cantidad</td>
+                    <td>@item.Cantidad.ToString("N2")</td>
                 </tr>
             }
             </tbody>

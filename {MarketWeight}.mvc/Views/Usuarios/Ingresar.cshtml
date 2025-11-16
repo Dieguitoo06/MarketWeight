@@ -8,7 +8,7 @@
     {
         <div class="alert alert-info">@msg</div>
     }
-    <p>Saldo actual: <strong>@(ViewData["Saldo"] ?? 0)</strong></p>
+    <p>Saldo actual: <strong>@String.Format("{0:N2}", ViewData["Saldo"] ?? 0)</strong></p>
     <form asp-action="Ingresar" method="post" class="row g-2">
         @Html.AntiForgeryToken()
         <div class="col-auto">

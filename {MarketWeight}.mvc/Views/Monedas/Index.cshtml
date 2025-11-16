@@ -27,8 +27,8 @@
     {
         <tr>
             <td>@m.Nombre</td>
-            <td>@m.Precio</td>
-            <td>@m.Cantidad</td>
+            <td>@m.Precio.ToString("N2")</td>
+            <td>@m.Cantidad.ToString("N2")</td>
             <td>
                 <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@m.IdMoneda">Detalle</a>
             </td>
