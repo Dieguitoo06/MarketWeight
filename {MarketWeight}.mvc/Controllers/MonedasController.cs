@@ -84,9 +84,25 @@ public class MonedasController : Controller
 
         try
         {
+            var usuario = _repoUsuario.Detalle(userId);
+            if (usuario is null)
+            {
+                return NotFound();
+            }
+            
+            var precioTotal = moneda.Precio * cantidad;
+            
             _repoUsuario.Compra(userId, cantidad, idMoneda);
-            TempData["Message"] = "Compra realizada y agregada a tu billetera";
-            return RedirectToAction("Details", "Usuarios", new { id = userId });
+            
+            // Guardar datos de la compra en ViewData para mostrar en la confirmación
+            ViewData["NombreMoneda"] = moneda.Nombre;
+            ViewData["Cantidad"] = cantidad.ToString("N2");
+            ViewData["PrecioUnitario"] = moneda.Precio.ToString("N2");
+            ViewData["PrecioTotal"] = precioTotal.ToString("N2");
+            ViewData["SaldoAnterior"] = usuario.Saldo.ToString("N2");
+            ViewData["SaldoNuevo"] = (usuario.Saldo - precioTotal).ToString("N2");
+            
+            return View("Confirmation");
         }
         catch (Exception ex)
         {

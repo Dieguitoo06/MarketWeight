@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Confirmación de Compra";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-success shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <h4 class="mb-0">✓ ¡Compra Realizada Correctamente!</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-5">Moneda:</dt>
+                        <dd class="col-sm-7"><strong>@(ViewData["NombreMoneda"] ?? "N/A")</strong></dd>
+
+                        <dt class="col-sm-5">Cantidad:</dt>
+                        <dd class="col-sm-7"><strong>@(ViewData["Cantidad"] ?? "0.00")</strong></dd>
+
+                        <dt class="col-sm-5">Precio Unitario:</dt>
+                        <dd class="col-sm-7"><strong>@(ViewData["PrecioUnitario"] ?? "0.00")</strong></dd>
+
+                        <dt class="col-sm-5">Precio Total:</dt>
+                        <dd class="col-sm-7"><strong class="text-danger">-@(ViewData["PrecioTotal"] ?? "0.00")</strong></dd>
+
+                        <hr class="col-12" />
+
+                        <dt class="col-sm-5">Saldo Anterior:</dt>
+                        <dd class="col-sm-7">@(ViewData["SaldoAnterior"] ?? "0.00")</dd>
+
+                        <dt class="col-sm-5">Saldo Nuevo:</dt>
+                        <dd class="col-sm-7"><strong class="text-success">@(ViewData["SaldoNuevo"] ?? "0.00")</strong></dd>
+                    </dl>
+
+                    <p class="text-muted small mt-3">
+                        La moneda ha sido agregada a tu billetera.
+                    </p>
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <a class="btn btn-primary" asp-action="Buy">Comprar Otra Moneda</a>
+                    <a class="btn btn-secondary" asp-controller="Usuarios" asp-action="Me">Ver Mi Billetera</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
