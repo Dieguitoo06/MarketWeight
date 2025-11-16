@@ -62,20 +62,21 @@ else
 {
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>IdMoneda</th>
-                <th>Nombre</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in billetera)
-        {
-            <tr>
-                <td>@item.idMoneda</td>
-                <td>@item.Cantidad</td>
-            </tr>
-        }
-        </tbody>
+                <tr>
+                    <th>IdMoneda</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in billetera)
+            {
+                <tr>
+                    <td>@item.idMoneda</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Cantidad</td>
+                </tr>
+            }
+            </tbody>
     </table>
 }

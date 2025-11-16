@@ -16,16 +16,23 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public void Alta(Usuario usuario)
     {
-
-        var parametros = new DynamicParameters();
-        parametros.Add("@xnombre", usuario.Nombre);
-        parametros.Add("@xapellido", usuario.Apellido);
-        parametros.Add("@xemail", usuario.Email);
-        parametros.Add("@xpass", usuario.Password);
-        parametros.Add("@xesAdmin", usuario.EsAdmin);
         try
         {
-            Conexion.Execute("AltaUsuario", parametros);
+            // Usar SQL directo en lugar del procedimiento para evitar problemas de truncamiento
+            var consulta = @"INSERT INTO Usuario (nombre, apellido, email, pass, saldo, esAdmin) 
+                            VALUES (@nombre, @apellido, @email, @pass, @saldo, @esAdmin)";
+            
+            var parametros = new 
+            {
+                nombre = usuario.Nombre,
+                apellido = usuario.Apellido,
+                email = usuario.Email,
+                pass = usuario.Password,
+                saldo = usuario.Saldo,
+                esAdmin = usuario.EsAdmin
+            };
+            
+            Conexion.Execute(consulta, parametros);
         }
         catch (DbException e)
         {
@@ -141,16 +148,16 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     }
 
     private static readonly string _queryDetalle = @"
-            SELECT  *
+            SELECT  idUsuario, nombre, apellido, email, pass AS Password, saldo, esAdmin AS EsAdmin
             FROM    Usuario
             WHERE   idUsuario = @xidUsuario;
 
-            SELECT  *
+            SELECT  UM.idUsuario AS idUsuario, UM.idMoneda AS idMoneda, UM.cantidad AS Cantidad, M.nombre AS Nombre, M.precio AS Precio
             FROM    UsuarioMoneda UM
-            JOIN    Moneda M USING (idMoneda)
-            WHERE   idUsuario = @xidUsuario;
+            JOIN    Moneda M ON UM.idMoneda = M.idMoneda
+            WHERE   UM.idUsuario = @xidUsuario;
 
-            SELECT  *
+            SELECT  idHistorial, idMoneda, cantidad, fechaHora, compra, idUsuario
             FROM    Historial H
             WHERE   idUsuario = @xidUsuario;
         ";
@@ -162,8 +169,10 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             var usuario = multi.ReadSingleOrDefault<Usuario>();
 
             if (usuario is not null)
+            {
                 usuario.Billetera = multi.Read<UsuarioMoneda>().ToList();
                 usuario.Transacciones = multi.Read<Historial>().ToList();
+            }
 
             return usuario;
         }
@@ -171,15 +180,23 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public async Task AltaAsync(Usuario usuario)
     {
-        var parametros = new DynamicParameters();
-        parametros.Add("@xnombre", usuario.Nombre);
-        parametros.Add("@xapellido", usuario.Apellido);
-        parametros.Add("@xemail", usuario.Email);
-        parametros.Add("@xpass", usuario.Password);
-        parametros.Add("@xesAdmin", usuario.EsAdmin);
         try
         {
-            await Conexion.ExecuteAsync("AltaUsuario", parametros);
+            // Usar SQL directo en lugar del procedimiento para evitar problemas de truncamiento
+            var consulta = @"INSERT INTO Usuario (nombre, apellido, email, pass, saldo, esAdmin) 
+                            VALUES (@nombre, @apellido, @email, @pass, @saldo, @esAdmin)";
+            
+            var parametros = new 
+            {
+                nombre = usuario.Nombre,
+                apellido = usuario.Apellido,
+                email = usuario.Email,
+                pass = usuario.Password,
+                saldo = usuario.Saldo,
+                esAdmin = usuario.EsAdmin
+            };
+            
+            await Conexion.ExecuteAsync(consulta, parametros);
         }
         catch (DbException e)
         {
@@ -284,8 +301,11 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         {
             var usuario = multi.ReadSingleOrDefault<Usuario>();
             if (usuario is not null)
+            {
                 usuario.Billetera = multi.Read<UsuarioMoneda>().ToList();
                 usuario.Transacciones = multi.Read<Historial>().ToList();
+            }
+
             return usuario;
         }
     }
@@ -317,4 +337,27 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
         await Conexion.ExecuteAsync("UPDATE Usuario SET nombre = @xnombre, apellido = @xapellido, email = @xemail, pass = @xpass, saldo = @xsaldo, esAdmin = @xesAdmin WHERE idUsuario = @xidUsuario", parametros);
     }
+
+    public Usuario? ObtenerPorEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return null;
+
+        var emailNorm = email.Trim().ToLowerInvariant();
+        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo, esAdmin AS EsAdmin FROM Usuario WHERE LOWER(email) = @email";
+        var usuario = Conexion.QueryFirstOrDefault<Usuario>(consulta, new { email = emailNorm });
+        return usuario;
+    }
+
+    public async Task<Usuario?> ObtenerPorEmailAsync(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return null;
+
+        var emailNorm = email.Trim().ToLowerInvariant();
+        var consulta = "SELECT idUsuario, nombre, apellido, email, pass AS Password, saldo, esAdmin AS EsAdmin FROM Usuario WHERE LOWER(email) = @email";
+        var usuario = await Conexion.QueryFirstOrDefaultAsync<Usuario>(consulta, new { email = emailNorm });
+        return usuario;
+    }
 }
+

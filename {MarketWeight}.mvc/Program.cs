@@ -16,6 +16,15 @@ builder.Services
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/Login";
         options.SlidingExpiration = true;
+        
+        // Configurar tiempo de expiración de la cookie
+        // ExpireTimeSpan: tiempo máximo de inactividad antes de que expire la sesión (30 minutos)
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        
+        // Configuración de seguridad de la cookie
+        options.Cookie.Name = "MarketWeight.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     });
 
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");

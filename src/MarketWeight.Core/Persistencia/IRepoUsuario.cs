@@ -31,6 +31,9 @@ public interface IRepoUsuario :
     Task TransferenciaAsync(uint idmoneda, decimal cantidad, uint idusuarioTransfiere, uint idusuarioTransferido);
     Task<IEnumerable<Usuario>> ObtenerPorCondicionAsync(string condicion);
     Task<IEnumerable<UsuarioMoneda>> ObtenerUsuarioMonedaAsync();
-    Task<IEnumerable<UsuarioMoneda>> ObtenerPorCondicionUsuarioMonedaAsync(uint? userid, decimal? cantidad);
+    Task<IEnumerable<UsuarioMoneda>> ObtenerPorCondicionUsuarioMonedaAsync (uint? userid, decimal? cantidad);
     Task<Usuario?> DetalleCompletoAsync(uint idUsuario);
+
+    Usuario? ObtenerPorEmail(string email);
+    Task<Usuario?> ObtenerPorEmailAsync(string email);
 }
