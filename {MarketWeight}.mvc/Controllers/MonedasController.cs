@@ -7,18 +7,28 @@ using MarketWeight.Core;
 
 namespace _MarketWeight_.mvc.Controllers;
 
+/// <summary>
+/// Controlador para la gestión de criptomonedas
+/// Permite listar, ver detalles, comprar y crear monedas (solo administradores)
+/// </summary>
 [Authorize]
 public class MonedasController : Controller
 {
     private readonly IRepoMoneda _repoMoneda;
     private readonly IRepoUsuario _repoUsuario;
 
+    /// <summary>
+    /// Constructor que inyecta los repositorios necesarios
+    /// </summary>
     public MonedasController(IRepoMoneda repoMoneda, IRepoUsuario repoUsuario)
     {
         _repoMoneda = repoMoneda;
         _repoUsuario = repoUsuario;
     }
 
+    /// <summary>
+    /// GET: Lista todas las criptomonedas disponibles
+    /// </summary>
     public IActionResult Index()
     {
         var monedas = _repoMoneda.Obtener();
@@ -32,6 +42,10 @@ public class MonedasController : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// GET: Muestra los detalles de una criptomoneda específica
+    /// </summary>
+    /// <param name="id">ID de la moneda</param>
     public IActionResult Details(uint id)
     {
         var moneda = _repoMoneda.Detalle(id);
@@ -46,6 +60,9 @@ public class MonedasController : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// GET: Muestra el formulario de compra de criptomonedas
+    /// </summary>
     [HttpGet]
     public IActionResult Buy()
     {
@@ -54,6 +71,12 @@ public class MonedasController : Controller
         return View();
     }
 
+    /// <summary>
+    /// POST: Procesa la compra de criptomonedas por parte del usuario autenticado
+    /// Valida disponibilidad de stock y saldo del usuario
+    /// </summary>
+    /// <param name="idMoneda">ID de la moneda a comprar</param>
+    /// <param name="cantidad">Cantidad de monedas a comprar</param>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Buy(uint idMoneda, decimal cantidad)
@@ -111,6 +134,9 @@ public class MonedasController : Controller
         }
     }
 
+    /// <summary>
+    /// GET: Muestra el formulario para crear una nueva criptomoneda (solo administradores)
+    /// </summary>
     [HttpGet]
     [Authorize(Roles = "Admin")]
     public IActionResult Create()
@@ -118,6 +144,10 @@ public class MonedasController : Controller
         return View(new MonedaDto());
     }
 
+    /// <summary>
+    /// POST: Crea una nueva criptomoneda en el sistema (solo administradores)
+    /// </summary>
+    /// <param name="dto">Datos de la nueva moneda</param>
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin")]

@@ -1,7 +1,364 @@
-/* Responsive Mobile-First Adjustments */
+/* ===================================================
+   Responsive.css - Media Queries Mobile-First
+   Adaptaciones responsive para diferentes tamaños de pantalla
+   Estrategia: Mobile-First (comenzar con móvil, luego mejorar)
+   =================================================== */
 
-/* Extra small devices (phones, < 576px) */
+/* ===================================================
+   Dispositivos extra pequeños (teléfonos, < 576px)
+   Esto es la base mobile, con ajustes específicos para pantallas muy pequeñas
+   =================================================== */
 @media (max-width: 575.98px) {
+  /* Reducir tamaño de fuente base para móvil */
+  html {
+    font-size: 13px;
+  }
+
+  /* Espacio inferior para que el contenido no quede bajo la barra de navegación fija */
+  body {
+    margin-bottom: 40px;
+  }
+
+  /* ===================================================
+     Ajustes de la barra de navegación en móvil
+     =================================================== */
+  .navbar {
+    padding: 0.5rem 0 !important;
+  }
+
+  .navbar-brand {
+    font-size: 1.1rem;
+    margin-right: 1rem !important;
+  }
+
+  .navbar .nav-link {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    padding: 0.35rem 0.5rem !important;
+  }
+
+  .navbar-toggler {
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Botón de alternancia de tema */
+  .theme-toggle {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===================================================
+     Botones - Ajustes de tamaño y padding
+     =================================================== */
+  .btn, .btn-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .btn-lg {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .d-grid .btn {
+    padding: 0.6rem 1rem;
+  }
+
+  /* ===================================================
+     Tarjetas - Reducir padding y bordes
+     =================================================== */
+  .card {
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .card-header {
+    padding: 12px 16px !important;
+    font-size: 0.95rem;
+  }
+
+  .card-body {
+    padding: 0.75rem;
+  }
+
+  .auth-card {
+    padding: 16px;
+    max-width: 100% !important;
+  }
+
+  /* ===================================================
+     Títulos de sección - Ajuste a columna
+     =================================================== */
+  .section-title {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .section-title h1 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title .pill {
+    margin-top: 0;
+    font-size: 0.8rem;
+  }
+
+  /* ===================================================
+     Tablas - Fuentes más pequeñas
+     =================================================== */
+  .table {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .table thead th {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  .table tbody td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  /* ===================================================
+     Formularios - Reducir tamaño
+     =================================================== */
+  .form-control, .form-select, .form-control.form-control-lg, .form-select-lg {
+    padding: 0.5rem 0.65rem;
+    font-size: 0.95rem;
+    border-radius: 6px;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  /* ===================================================
+     Encabezados - Ajustar tamaños
+     =================================================== */
+  h1 { font-size: 1.4rem; line-height: 1.2; }
+  h2 { font-size: 1.15rem; line-height: 1.2; }
+  h3 { font-size: 1rem; line-height: 1.2; }
+  h4 { font-size: 0.95rem; }
+  h5 { font-size: 0.9rem; }
+  h6 { font-size: 0.85rem; }
+
+  /* ===================================================
+     Listas de definición (Definition Lists)
+     =================================================== */
+  .row > .col-sm-2, .row > .col-sm-10 {
+    margin-bottom: 0.5rem;
+  }
+
+  dt { font-size: 0.85rem; font-weight: 600; }
+  dd { font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+  /* ===================================================
+     Contenedores - Reducir padding
+     =================================================== */
+  .container, .container-fluid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .mw-shell {
+    padding: 0 0.5rem;
+  }
+
+  /* ===================================================
+     Espaciado de grilla - Reducir gaps
+     =================================================== */
+  .g-3 { --bs-gutter-x: 0.75rem; --bs-gutter-y: 0.75rem; }
+  .g-2 { --bs-gutter-x: 0.5rem; --bs-gutter-y: 0.5rem; }
+  .gy-2 { --bs-gutter-y: 0.5rem; }
+  .gx-2 { --bs-gutter-x: 0.5rem; }
+
+  /* ===================================================
+     Utilidades de márgenes y padding
+     =================================================== */
+  .mt-4, .my-4 { margin-top: 0.75rem !important; }
+  .mb-4, .my-4 { margin-bottom: 0.75rem !important; }
+  .mt-3, .my-3 { margin-top: 0.5rem !important; }
+  .mb-3, .my-3 { margin-bottom: 0.5rem !important; }
+
+  .p-3 { padding: 0.75rem !important; }
+  .ps-3 { padding-left: 0.75rem !important; }
+  .pe-3 { padding-right: 0.75rem !important; }
+  .pt-3 { padding-top: 0.75rem !important; }
+  .pb-3 { padding-bottom: 0.75rem !important; }
+
+  /* ===================================================
+     Etiquetas (Badges)
+     =================================================== */
+  .badge {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  /* ===================================================
+     Alertas
+     =================================================== */
+  .alert {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  /* ===================================================
+     Columnas de fila responsive
+     =================================================== */
+  .row-cols-1 > .col {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  /* ===================================================
+     Footer
+     =================================================== */
+  footer.footer {
+    margin-top: 1.5rem;
+    padding: 1rem 0.5rem;
+  }
+
+  /* ===================================================
+     Fila de formulario
+     =================================================== */
+  .row.gy-2.gx-2 {
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
+  }
+
+  /* ===================================================
+     Listas de definición responsive
+     =================================================== */
+  dl.row dt {
+    float: none;
+    padding-bottom: 0.25rem;
+  }
+
+  dl.row dd {
+    margin-left: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  /* ===================================================
+     Ancho completo para columnas
+     =================================================== */
+  .col-12 {
+    max-width: 100%;
+  }
+
+  /* ===================================================
+     Texto pequeño
+     =================================================== */
+  small, .small {
+    font-size: 0.8rem;
+  }
+
+  /* ===================================================
+     Imágenes responsive
+     =================================================== */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ===================================================
+     Grupos de entrada
+     =================================================== */
+  .input-group {
+    flex-wrap: wrap;
+  }
+
+  .input-group > .form-control,
+  .input-group > .form-select {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+}
+
+/* ===================================================
+   Dispositivos pequeños (teléfonos en horizontal, 576px - 767px)
+   =================================================== */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  html {
+    font-size: 14px;
+  }
+
+  .navbar .nav-link {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem !important;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+}
+
+/* ===================================================
+   Dispositivos medianos (tablets, 768px en adelante)
+   =================================================== */
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;                              /* Tamaño de fuente base de escritorio */
+  }
+
+  .mw-shell {
+    max-width: 1200px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .auth-card {
+    max-width: 420px;
+  }
+
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.4rem; }
+  h3 { font-size: 1.2rem; }
+}
+
+/* ===================================================
+   Dispositivos grandes (desktops, 992px en adelante)
+   =================================================== */
+@media (min-width: 992px) {
+  .mw-shell {
+    max-width: 1200px;
+    padding: 0 2rem;
+  }
+
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+}
+
+/* ===================================================
+   Dispositivos extra grandes (desktops muy grandes, 1200px en adelante)
+   =================================================== */
+@media (min-width: 1200px) {
+  .mw-shell {
+    max-width: 1200px;
+  }
+}
   html {
     font-size: 13px;
   }
@@ -229,7 +586,7 @@
     min-width: 0;
     flex: 1 1 auto;
   }
-}
+
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px) {

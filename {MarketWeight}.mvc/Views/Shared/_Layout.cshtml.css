@@ -1,46 +1,74 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿/* ===================================================
+   _Layout.cshtml.css - Estilos específicos del layout
+   Estilos componentes del layout base de la aplicación
+   Referencia: https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+   =================================================== */
 
+/* ===================================================
+   Estilos de marca/logo en navbar
+   =================================================== */
 a.navbar-brand {
-  white-space: normal;
+  white-space: normal;                              /* Permitir saltos de línea en el texto */
   text-align: center;
-  word-break: break-all;
+  word-break: break-all;                            /* Romper palabras muy largas */
 }
 
+/* ===================================================
+   Enlaces globales
+   =================================================== */
 a {
-  color: #0077cc;
+  color: #0077cc;                                   /* Color azul personalizado */
 }
 
+/* ===================================================
+   Botón primario personalizado
+   =================================================== */
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
+  background-color: #1b6ec2;                        /* Azul oscuro */
   border-color: #1861ac;
 }
 
+/* ===================================================
+   Navegación con tabs - Enlace activo
+   =================================================== */
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
 
+/* ===================================================
+   Bordes de contenedor
+   =================================================== */
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
 }
 
+/* ===================================================
+   Sombra de caja - Efecto de profundidad
+   =================================================== */
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
+/* ===================================================
+   Botón de política de cookies
+   =================================================== */
 button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
 }
 
+/* ===================================================
+   Pie de página (Footer)
+   =================================================== */
 .footer {
-  position: absolute;
+  position: absolute;                               /* Posicionado al pie de la página */
   bottom: 0;
   width: 100%;
   white-space: nowrap;

@@ -7,16 +7,26 @@ using System.Security.Claims;
 
 namespace _MarketWeight_.mvc.Controllers;
 
+/// <summary>
+/// Controlador para la gestión de usuarios y operaciones financieras
+/// Permite listar usuarios, ver perfil, ingresar dinero, transferencias y gestión de permisos
+/// </summary>
 [Authorize]
 public class UsuariosController : Controller
 {
     private readonly IRepoUsuario _repoUsuario;
 
+    /// <summary>
+    /// Constructor que inyecta el repositorio de usuarios
+    /// </summary>
     public UsuariosController(IRepoUsuario repoUsuario)
     {
         _repoUsuario = repoUsuario;
     }
 
+    /// <summary>
+    /// GET: Lista todos los usuarios del sistema
+    /// </summary>
     public IActionResult Index()
     {
         var usuarios = _repoUsuario.Obtener();
@@ -33,6 +43,10 @@ public class UsuariosController : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// GET: Muestra los detalles de un usuario específico incluyendo su billetera
+    /// </summary>
+    /// <param name="id">ID del usuario</param>
     public IActionResult Details(uint id)
     {
         var usuario = _repoUsuario.DetalleCompleto(id);
@@ -51,6 +65,9 @@ public class UsuariosController : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// GET: Redirige al usuario autenticado a su página de detalle personal
+    /// </summary>
     [HttpGet]
     public IActionResult Me()
     {
@@ -63,6 +80,9 @@ public class UsuariosController : Controller
 
     // Crear usuario vía UI deshabilitado; los usuarios se crean por Register
 
+    /// <summary>
+    /// GET: Muestra el formulario para ingresar dinero a la billetera del usuario
+    /// </summary>
     [HttpGet]
     public IActionResult Ingresar()
     {
@@ -78,6 +98,10 @@ public class UsuariosController : Controller
         return View();
     }
 
+    /// <summary>
+    /// POST: Procesa el ingreso de dinero a la billetera del usuario autenticado
+    /// </summary>
+    /// <param name="monto">Cantidad de dinero a ingresar</param>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Ingresar(decimal monto)
@@ -97,6 +121,11 @@ public class UsuariosController : Controller
         return RedirectToAction(nameof(Ingresar));
     }
 
+    /// <summary>
+    /// POST: Alterna los permisos de administrador de un usuario (solo administradores)
+    /// No permite que un admin se quite a sí mismo los permisos
+    /// </summary>
+    /// <param name="id">ID del usuario a modificar</param>
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin")]

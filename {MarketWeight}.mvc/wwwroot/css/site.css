@@ -1,3 +1,10 @@
+/* ===================================================
+   MarketWeight - Site.css
+   Estilos personalizados para la plataforma de trading de criptomonedas
+   Tema moderno inspirado en Binance con soporte para modo oscuro y claro
+   =================================================== */
+
+/* Configuración base del tamaño de fuente responsive */
 html {
   font-size: 14px;
 }
@@ -8,10 +15,12 @@ html {
   }
 }
 
+/* Estilos de enfoque para accesibilidad */
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #0ea5e9;
 }
 
+/* Configuración base del documento */
 html {
   position: relative;
   min-height: 100%;
@@ -21,65 +30,78 @@ body {
   margin-bottom: 60px;
 }
 
-/* Modern Crypto Platform Theme - Inspired by Binance */
+/* ===================================================
+   Variables de tema - Define los colores de la aplicación
+   Soporta tema oscuro (por defecto) y tema claro
+   =================================================== */
+
+/* Tema oscuro (por defecto) */
 :root {
-  --bg-primary: #0f172a;           /* Dark blue-slate */
-  --bg-secondary: #1a1f3a;         /* Slightly lighter */
-  --bg-tertiary: #111827;          /* Very dark */
-  --text-primary: #f1f5f9;         /* Almost white */
-  --text-secondary: #cbd5e1;       /* Light gray */
-  --text-muted: #94a3b8;           /* Medium gray */
-  --accent-1: #0ea5e9;             /* Cyan (primary) */
-  --accent-2: #06b6d4;             /* Turquoise */
-  --accent-3: #10b981;             /* Green */
-  --accent-error: #ef4444;         /* Red */
-  --accent-warning: #f59e0b;       /* Amber */
-  --border: #1e293b;               /* Dark border */
-  --card-bg: #1a1f3a;              /* Card background */
-  --table-stripe: #0b1222;
+  --bg-primary: #0f172a;           /* Fondo primario - azul muy oscuro */
+  --bg-secondary: #1a1f3a;         /* Fondo secundario - azul oscuro */
+  --bg-tertiary: #111827;          /* Fondo terciario - casi negro */
+  --text-primary: #f1f5f9;         /* Texto principal - casi blanco */
+  --text-secondary: #cbd5e1;       /* Texto secundario - gris claro */
+  --text-muted: #94a3b8;           /* Texto atenuado - gris medio */
+  --accent-1: #0ea5e9;             /* Acento 1 - Cyan (color primario) */
+  --accent-2: #06b6d4;             /* Acento 2 - Turquesa */
+  --accent-3: #10b981;             /* Acento 3 - Verde (éxito) */
+  --accent-error: #ef4444;         /* Color de error - Rojo */
+  --accent-warning: #f59e0b;       /* Color de advertencia - Ámbar */
+  --border: #1e293b;               /* Color de bordes - gris oscuro */
+  --card-bg: #1a1f3a;              /* Fondo de tarjetas */
+  --table-stripe: #0b1222;         /* Color de filas alternas en tablas */
 }
 
+/* Tema claro - Alternar con data-theme="light" */
 [data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
-  --bg-tertiary: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
-  --accent-1: #0284c7;
-  --accent-2: #0891b2;
-  --accent-3: #059669;
-  --accent-error: #dc2626;
-  --accent-warning: #d97706;
-  --border: #e2e8f0;
-  --card-bg: #ffffff;
-  --table-stripe: #f1f5f9;
+  --bg-primary: #f8fafc;           /* Fondo claro */
+  --bg-secondary: #f1f5f9;         /* Gris claro */
+  --bg-tertiary: #e2e8f0;          /* Gris más oscuro */
+  --text-primary: #0f172a;         /* Texto oscuro */
+  --text-secondary: #334155;       /* Gris oscuro */
+  --text-muted: #64748b;           /* Gris medio */
+  --accent-1: #0284c7;             /* Azul más saturado */
+  --accent-2: #0891b2;             /* Cian más saturado */
+  --accent-3: #059669;             /* Verde más saturado */
+  --accent-error: #dc2626;         /* Rojo más saturado */
+  --accent-warning: #d97706;       /* Ámbar más saturado */
+  --border: #e2e8f0;               /* Bordes claros */
+  --card-bg: #ffffff;              /* Tarjetas blancas */
+  --table-stripe: #f1f5f9;         /* Filas alternas */
 }
 
+/* ===================================================
+   Estilos generales del body
+   =================================================== */
 body {
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
 }
 
-/* Navbar Styling */
+/* ===================================================
+   Estilos de la barra de navegación
+   =================================================== */
 .navbar {
   background: rgba(15, 23, 42, 0.95) !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);                        /* Efecto de vidrio esmerilado */
   border-bottom: 1px solid var(--border);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* Logo/Marca de la navbar */
 .navbar .navbar-brand {
   font-size: 1.5rem;
   font-weight: 700;
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  -webkit-background-clip: text;
+  -webkit-background-clip: text;                      /* Fondo de gradiente en texto */
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-right: 2rem;
 }
 
+/* Enlaces de navegación */
 .navbar .nav-link {
   color: var(--text-secondary) !important;
   transition: color 0.3s ease;
@@ -96,7 +118,9 @@ body {
   border-bottom: 2px solid var(--accent-1);
 }
 
-/* Theme Toggle Button */
+/* ===================================================
+   Botón de alternancia de tema
+   =================================================== */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -117,7 +141,11 @@ body {
   box-shadow: 0 0 12px rgba(14, 165, 233, 0.3);
 }
 
-/* Button Styles */
+/* ===================================================
+   Estilos de botones
+   =================================================== */
+
+/* Botón primario - Cyan con gradiente */
 .btn-primary {
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   border: none;
@@ -130,11 +158,12 @@ body {
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px);                        /* Efecto de elevación */
   box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
   background: linear-gradient(135deg, #0284c7, #0891b2);
 }
 
+/* Botón secundario - Gris con borde */
 .btn-secondary {
   background-color: var(--bg-tertiary);
   border: 1px solid var(--border);
@@ -150,6 +179,7 @@ body {
   background-color: rgba(14, 165, 233, 0.1);
 }
 
+/* Botón de borde - Outline */
 .btn-outline-secondary {
   color: var(--text-primary);
   border: 1px solid var(--border);
@@ -163,6 +193,7 @@ body {
   background: rgba(14, 165, 233, 0.1);
 }
 
+/* Botón de éxito - Verde con gradiente */
 .btn-success {
   background: linear-gradient(135deg, var(--accent-3), #059669);
   border: none;
@@ -177,6 +208,7 @@ body {
   box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
 }
 
+/* Botón de advertencia - Ámbar con gradiente */
 .btn-warning {
   background: linear-gradient(135deg, var(--accent-warning), #d97706);
   border: none;
@@ -190,7 +222,9 @@ body {
   background: linear-gradient(135deg, #d97706, #ca8a04);
 }
 
-/* Card Styles */
+/* ===================================================
+   Estilos de tarjetas (Cards)
+   =================================================== */
 .card {
   background-color: var(--card-bg);
   border: 1px solid var(--border);
@@ -203,7 +237,7 @@ body {
 .card:hover {
   border-color: var(--accent-1);
   box-shadow: 0 8px 24px rgba(14, 165, 233, 0.2);
-  transform: translateY(-4px);
+  transform: translateY(-4px);                        /* Efecto de flotación */
 }
 
 .card h1, .card h2, .card h3 {
@@ -211,11 +245,13 @@ body {
   color: var(--text-primary);
 }
 
+/* Tarjeta con borde verde (éxito) */
 .card.border-success {
   border: 1px solid var(--accent-3) !important;
   background: linear-gradient(135deg, var(--card-bg), rgba(16, 185, 129, 0.05));
 }
 
+/* Encabezado de tarjeta con gradiente */
 .card-header {
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2)) !important;
   border-radius: 14px 14px 0 0 !important;
@@ -223,7 +259,9 @@ body {
   font-weight: 600;
 }
 
-/* Section Title */
+/* ===================================================
+   Título de sección
+   =================================================== */
 .section-title {
   display: flex;
   align-items: center;
@@ -237,6 +275,7 @@ body {
   margin: 0;
 }
 
+/* Etiqueta tipo "píldora" para contar registros */
 .pill {
   display: inline-block;
   padding: 6px 12px;
@@ -248,11 +287,14 @@ body {
   font-weight: 600;
 }
 
-/* Table Styles */
+/* ===================================================
+   Estilos de tablas
+   =================================================== */
 .table {
   color: var(--text-primary);
 }
 
+/* Encabezados de tabla */
 .table thead th {
   border-bottom: 2px solid var(--border);
   color: var(--text-secondary);
@@ -261,11 +303,13 @@ body {
   padding: 12px;
 }
 
+/* Filas alternas con colores */
 .table-striped > tbody > tr:nth-of-type(odd) > * {
   --bs-table-accent-bg: var(--table-stripe);
   color: var(--text-primary);
 }
 
+/* Filas de tabla con hover */
 .table tbody tr {
   border-bottom: 1px solid var(--border);
   transition: background-color 0.2s ease;
@@ -275,7 +319,9 @@ body {
   background-color: rgba(14, 165, 233, 0.08) !important;
 }
 
-/* Form Styles */
+/* ===================================================
+   Estilos de formularios
+   =================================================== */
 .form-control, .form-select {
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
@@ -286,6 +332,7 @@ body {
   font-weight: 500;
 }
 
+/* Enfoque en controles de formulario */
 .form-control:focus, .form-select:focus {
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
@@ -293,6 +340,7 @@ body {
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
+/* Placeholder de inputs */
 .form-control::placeholder {
   color: var(--text-muted);
 }

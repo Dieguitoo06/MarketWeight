@@ -9,6 +9,10 @@ using MarketWeight.Core.Persistencia;
 
 namespace _MarketWeight_.mvc.Controllers;
 
+/// <summary>
+/// Controlador de autenticación y gestión de cuentas de usuario
+/// Maneja registro, login, logout y operaciones relacionadas con la autenticación
+/// </summary>
 public class AccountController : Controller
 {
     private readonly IRepoUsuario _repoUsuario;
@@ -61,6 +65,10 @@ public class AccountController : Controller
         });
     }
 
+    /// <summary>
+    /// GET: Muestra la vista de inicio de sesión
+    /// </summary>
+    /// <param name="returnUrl">URL a la que redirigir después del login exitoso</param>
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Login(string? returnUrl = null)
@@ -69,6 +77,13 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpPost]
+    /// POST: Procesa el inicio de sesión del usuario
+    /// Valida las credenciales contra la base de datos y crea la sesión autenticada
+    /// </summary>
+    /// <param name="email">Correo electrónico del usuario</param>
+    /// <param name="password">Contraseña del usuario</param>
+    /// <param name="returnUrl">URL a redirigir después del login exitoso</param>
     [HttpPost]
     [ValidateAntiForgeryToken]
     [AllowAnonymous]
@@ -146,6 +161,9 @@ public class AccountController : Controller
         }
     }
 
+    /// <summary>
+    /// GET: Muestra el formulario de registro de nueva cuenta
+    /// </summary>
     [HttpGet]
     [AllowAnonymous]
     public IActionResult Register()
@@ -153,6 +171,14 @@ public class AccountController : Controller
         return View();
     }
 
+    /// <summary>
+    /// POST: Procesa el registro de un nuevo usuario
+    /// Valida que el email no esté registrado y crea la nueva cuenta
+    /// </summary>
+    /// <param name="nombre">Nombre del nuevo usuario</param>
+    /// <param name="apellido">Apellido del nuevo usuario</param>
+    /// <param name="email">Correo electrónico del nuevo usuario</param>
+    /// <param name="password">Contraseña del nuevo usuario</param>
     [HttpPost]
     [ValidateAntiForgeryToken]
     [AllowAnonymous]
