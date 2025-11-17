@@ -192,56 +192,6 @@ public IActionResult Register(UsuarioDto usuario)
 **Cómo lo explicas:**
 > "Los DTOs usan [Required] y [EmailAddress]. Podría mejorar validando ModelState explícitamente en cada POST, agregando validadores custom (email único, contraseña fuerte), y mostrando errores específicos en las vistas con asp-validation-for."
 
----
-
-### 4. **NORMALIZACIÓN DE BD COMPLETA** 🗄️
-
-**Situación actual:**
-```
-✓ Tablas principales normalizadas
-✗ Algunas redundancias evitables
-✗ Sin índices explícitos en campos búsquedas
-✗ Sin vistas en BD para reportes complejos
-```
-
-**Cómo lo explicas:**
-> "La BD está en buena forma, pero podría:
-> 1. Agregar índices en Email (para búsquedas de usuarios)
-> 2. Crear vistas en BD para reportes (resumen de transacciones)
-> 3. Usar más triggers para integridad referencial
-> 4. Agregar campos de auditoría (FechaCreacion, UsuarioModifico)"
-
----
-
-### 5. **PERFORMANCE PODRÍA OPTIMIZARSE** ⚡
-
-**Situación actual:**
-```csharp
-// En controlador:
-public IActionResult Index()
-{
-    var usuarios = _repoUsuario.Obtener(); // Trae TODOS
-    return View(usuarios);
-}
-
-// Falta:
-✗ Paginación
-✗ Caching
-✗ Lazy loading
-✗ Índices en BD
-✗ Profiling
-```
-
-**Cómo lo explicas:**
-> "Con datasets grandes, podría mejorar:
-> 1. Agregar paginación (mostrar 10 por página)
-> 2. Implementar caching de monedas (datos que no cambian frecuentemente)
-> 3. Lazy loading en relaciones (Historial del usuario)
-> 4. Índices en BD en campos de búsqueda
-> 5. Async/await en repositorios para operaciones I/O"
-
----
-
 ## 🎤 SITUACIONES CONCRETAS QUE TE PREGUNTARÁN
 
 ### Situación 1: "¿Qué pasaría si un usuario intenta comprar una moneda que se acabó?"
@@ -353,41 +303,7 @@ public IActionResult Index()
 - Cómo es el SQL de actualización
 - Qué falta para auditoria
 
----
-
-### Situación 6: "¿Por qué usaste SHA-256 y no bcrypt?"
-
-**Respuesta honesta (reconoce limitación pero explica razonamiento):**
-> "SHA-256 es un hash criptográfico, pero NO es ideal para contraseñas porque:
-> 
-> Ventajas de SHA-256 que usé:
-> - Rápido y estándar
-> - Fácil de implementar en trigger MySQL
-> - Determinista (misma contraseña = mismo hash)
-> 
-> Desventajas (qué falta):
-> - Sin salt: mismo password = mismo hash siempre
-> - Sin iteraciones: no ralentiza ataques de fuerza bruta
-> - Bcrypt sería mejor: con salt + iterations automáticas
-> 
-> Por qué usé SHA-256:
-> - Era un proyecto de aprendizaje
-> - La base de datos tenía triggers preexistentes
-> - Funciona para proteger contra vistas casualmente
-> 
-> En producción usaría:
-> 1. PBKDF2 o Bcrypt con salt
-> 2. Iteraciones mínimas: 100,000+
-> 3. Nunca guardar plaintext
-> 4. Validar fuerza de contraseña (mín 8 chars, mayúscula, número)"
-
-**Lo que debes saber:**
-- Por qué SHA-256 es insuficiente
-- Qué es salt en hashing
-- Qué es bcrypt y por qué es mejor
-- Mencionar que reconoces la limitación
-
----
+-
 
 ### Situación 7: "¿Cómo hiciste responsive sin usar un framework como Bootstrap?"
 
@@ -449,37 +365,6 @@ public IActionResult Index()
 - Qué es SELECT FOR UPDATE
 - Por qué es importante con múltiples usuarios
 
----
-
-### Situación 9: "¿Cómo te aseguras que un usuario no pueda cambiar el ID en la URL?"
-
-**Respuesta correcta:**
-> "Múltiples capas:
-> 
-> 1. **Autenticación:** [Authorize] previene acceso sin login
-> 
-> 2. **Autorización:** Verificar que el ID pertenece al usuario actual
->    ```csharp
->    var usuarioActual = User.FindFirst(ClaimTypes.NameIdentifier);
->    if (usuarioActual.Value != id.ToString())
->        return Forbid(); // 403
->    ```
-> 
-> 3. **Validación:** RepoUsuario solo devuelve datos del usuario logueado
-> 
-> 4. **BD:** Constraints aseguran integridad referencial
-> 
-> Ejemplo en UsuariosController.Details(int id):
-> - Solo mostrar si es el usuario logueado O es admin
-> - Si intenta ID de otro, mostrar error 403 Forbidden"
-
-**Lo que debes saber:**
-- Claims en ASP.NET Core
-- ClaimTypes.NameIdentifier
-- Diferencia entre 401 Unauthorized y 403 Forbidden
-
----
-
 ### Situación 10: "Tu aplicación no tiene HTTPS, ¿qué pasa en producción?"
 
 **Respuesta honesta:**
@@ -533,50 +418,6 @@ public IActionResult Index()
 > 
 > Lección: La seguridad requiere múltiples capas, no una sola solución."
 
----
-
-### Si preguntan: "¿Por qué elegiste esta arquitectura?"
-
-**Respuesta fuerte:**
-> "Elegí arquitectura en capas para:
-> 
-> 1. **Mantenibilidad:** Cambiar BD sin tocar controladores
-> 2. **Testabilidad:** Inyectar mocks del repositorio
-> 3. **Escalabilidad:** Agregar nuevas features sin romper existentes
-> 4. **Estándar:** Pattern Repository es best practice en .NET
-> 
-> Ejemplo práctico: Si quisiera cambiar de MySQL a SQL Server:
-> - Solo cambio RepoUsuario, RepoMoneda, etc.
-> - Controladores no se tocan
-> - Interfaces quedan igual
-> 
-> Si quisiera agregar caché:
-> - Decorador sobre repositorio
-> - Sin afectar código actual"
-
----
-
-### Si preguntan: "¿Qué harías diferente si empiezas de nuevo?"
-
-**Respuesta reflexiva:**
-> "Cambiaría:
-> 
-> 1. **Desde el principio:** Tests (TDD) - escribir tests primero
-> 2. **Validación:** Más robusta con FluentValidation
-> 3. **Contraseñas:** Bcrypt en lugar de SHA-256
-> 4. **Logging:** Serilog centralizado
-> 5. **BD:** Auditoría automática de cambios
-> 6. **Frontend:** Más validación asincrónica
-> 7. **Performance:** Lazy loading en relaciones
-> 8. **Error handling:** Página de error custom
-> 
-> Pero como proyecto de aprendizaje, está bien porque:
-> - Cubre conceptos fundamentales
-> - Enseña trade-offs
-> - Funciona de punta a punta
-> - Es código real, no tutorial"
-
----
 
 ## 🎓 DATOS QUE DEBES MEMORIZAR
 
@@ -607,28 +448,6 @@ Authentication       → Verificar quién eres (cookies)
 Authorization        → Verificar qué puedes hacer ([Authorize])
 ```
 
----
-
-## 📋 CHECKLIST ANTES DE LA PRESENTACIÓN
-
-- [ ] Sé dónde están las 5 carpetas principales
-- [ ] Puedo explicar flujo de login en 2 minutos
-- [ ] Puedo explicar flujo de compra de moneda en 2 minutos
-- [ ] Sé qué significa SlidingExpiration
-- [ ] Sé por qué HttpOnly es importante
-- [ ] Puedo nombrar las 5 breakpoints responsive
-- [ ] Sé qué es el patrón Repository
-- [ ] Puedo explicar qué es Dependency Injection
-- [ ] Conozco 3 medidas de seguridad implementadas
-- [ ] Sé qué validaciones se aplican al crear usuario
-- [ ] Tengo memorizado dónde está cada controlador
-- [ ] Puedo mostrar código específico en editor
-- [ ] Reconozco qué podría mejorar (honestidad)
-- [ ] Sé responder "¿por qué elegiste esto?"
-- [ ] Puedo hablar 10+ minutos sin pausas grandes
-
----
-
 ## 🚀 BONUS: Cosas que Impresionarán
 
 ### Si preguntan algo simple:
@@ -652,27 +471,6 @@ R: "Es vulnerable sin locks. En el código actual no hay lock explicit,
    
    → Esto muestra: Honestidad + comprensión técnica + visión mejorada
 ```
-
-### Si no sabes la respuesta:
-**NUNCA digas "No sé". Siempre:**
-```
-1. Admite que no está implementado
-2. Explica cómo lo harías
-3. Menciona alternativas que conoces
-
-Ejemplo:
-P: "¿Implementaste Two-Factor Authentication?"
-R: "No, está fuera del scope actual. Lo haría:
-   1. Generar código aleatorio 6 dígitos
-   2. Guardar en tabla temporal con TTL 5min
-   3. Enviar por SMS/Email con SMTP
-   4. Usuario ingresa código para confirmar
-   5. Eliminar código tras validar
-   
-   Librerías: Twilio (SMS), SendGrid (Email), OTP libraries."
-```
-
----
 
 ## 🎬 CÓMO PRESENTAR MAÑANA
 
@@ -731,47 +529,3 @@ Pero como proyecto integral, cubre:
 - UI responsive funcional
 - Arquitectura escalable"
 ```
-
----
-
-## 📞 RESPUESTAS RÁPIDAS PARA PREGUNTAS COMUNES
-
-| Pregunta | Respuesta |
-|----------|-----------|
-| **¿Cuánto tiempo tardó?** | "3-4 semanas de desarrollo activo" |
-| **¿Trabajaste solo?** | "Sí, es un proyecto individual" |
-| **¿Qué frameworks usaste?** | "ASP.NET Core 8, Bootstrap 5, Dapper, MySQL" |
-| **¿Por qué .NET?** | "Porque domino C# y es robusto para aplicaciones web" |
-| **¿Subiste a GitHub?** | "Sí, repositorio en GitHub" |
-| **¿Desplegado?** | "En local actualmente, pero listo para Azure/AWS" |
-| **¿Admin por defecto?** | "No, cualquiera puede registrarse. Admin necesita toggle manual" |
-| **¿Validación XSS?** | "HttpOnly en cookies + Razor escaping automático" |
-
----
-
-## 🎯 PUNTOS FINALES
-
-**Lo que evaluarán:**
-✓ Comprensión de conceptos (autenticación, responsive, arquitectura)  
-✓ Decisiones técnicas justificadas (por qué elegiste X)  
-✓ Honestidad sobre limitaciones (qué falta, qué mejorarías)  
-✓ Capacidad de explicar código (puedes mostrar y explicar)  
-✓ Pensamiento crítico (reconoces problemas de concurrencia, performance)  
-
-**Lo que NO les importa:**
-✗ Que sea perfecto  
-✗ Que sea 100% secure  
-✗ Que tenga todas las features  
-✗ Que sea el código más rápido  
-
-**Lo que SÍ importa:**
-✓ Que funcione  
-✓ Que entiendas qué hiciste  
-✓ Que reconozcas qué falta  
-✓ Que puedas mantener/mejorar el código  
-
----
-
-**¡Estás preparado! Mucho éxito mañana! 💪**
-
-Recuerda: Los evaluadores no buscan perfección, buscan comprensión y capacidad de razonamiento técnico. Tú tienes ambas.
