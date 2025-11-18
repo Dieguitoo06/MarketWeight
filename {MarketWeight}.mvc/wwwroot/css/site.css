@@ -59,7 +59,7 @@ body {
   --bg-secondary: #f1f5f9;         /* Gris claro */
   --bg-tertiary: #e2e8f0;          /* Gris más oscuro */
   --text-primary: #0f172a;         /* Texto oscuro */
-  --text-secondary: #334155;       /* Gris oscuro */
+  --text-secondary: #ffffff;       /* Gris oscuro */
   --text-muted: #64748b;           /* Gris medio */
   --accent-1: #0284c7;             /* Azul más saturado */
   --accent-2: #0891b2;             /* Cian más saturado */
@@ -346,7 +346,7 @@ body {
 }
 
 .form-label {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
