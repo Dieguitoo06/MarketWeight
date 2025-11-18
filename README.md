@@ -1,71 +1,84 @@
-<h1 align="center">E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"</h1>
-<p align="center">
-  <img src="https://et12.edu.ar/imgs/computacion/vamoaprogramabanner.png" alt="Banner Computación">
-</p>
+// ...existing code...
+# E.T. Nº12 — MarketWeight
+**Administración y Gestión de Bases de Datos — 5° 8°**
 
-## Computación 2024
+Autores:
+- Diego Quintero — [Dieguitoo06](https://github.com/Dieguitoo06)  
 
-**Asignatura**: Administracion y Gestion de Base de Datos
+## Descripción breve
+MarketWeight permite visualizar oferta/demanda de criptomonedas con una interfaz web MVC y persistencia en MySQL. Incluye scripts para crear la BD, procedures, triggers (hash SHA‑256 de contraseñas) y pruebas automatizadas.
 
-**Curso**: 5° 8°
+## Carátula
+- Asignatura: Programacion sobre redes
+- Curso: 6° 8°  
+- Proyecto: MarketWeight  
+- Entrega: Trabajo práctico final
 
-# MarketWeight
+## Tecnologías
+- C# / ASP.NET MVC (.NET 8)  
+- MySQL 8.0  
+- MySqlConnector & Dapper (Ado)  
+- VS Code
 
-MarketWeight permite a los usuarios visualizar gráficamente la oferta y demanda de distintas criptomonedas a través de una iterfaz sencilla y gráficos que reflejan las transacciones. Todos estos datos son almacenados en una base de datos relacional escrita en MySQL. El objetivo de la aplicación es facilitar el análisis y la toma de decisiones sobre el comportamiento del mercado.
+## Estructura clave del repositorio
+- [README.md](README.md) (este archivo)  
+- [LICENSE](LICENSE)  
+- Scripts de base de datos:
+  - [scripts sql/Install.sql](scripts sql/Install.sql) — orquesta la instalación
+  - [scripts sql/01 MarketWeight-ddl.sql](scripts sql/01 MarketWeight-ddl.sql) — DDL (tablas)
+  - [scripts sql/03 Procedures.sql](scripts sql/03 Procedures.sql) — procedimientos almacenados
+  - [scripts sql/05 Triggers.sql](scripts sql/05 Triggers.sql) — triggers (hash de pass)
+- Backend:
+  - `{MarketWeight}.mvc/Program.cs` — configuración de servicios y seguridad ([ver archivo]({MarketWeight}.mvc/Program.cs)) — cookie auth HttpOnly configurada
+  - `src/MarketWeight.Ado.Dapper.Test/TestBase.cs` — base para pruebas unitarias y conexión ([`MarketWeight.Ado.Dapper.Test.TestBase`](src/MarketWeight.Ado.Dapper.Test/TestBase.cs))
+- Proyecto de pruebas: `src/MarketWeight.Ado.Dapper.Test` (ejecutar pruebas con dotnet)
 
-## Comenzando 🚀
+## Implementación — puntos importantes
+- Persistencia: MySQL con tablas normalizadas (Usuario, Moneda, UsuarioMoneda, Historial). Scripts en `scripts sql/` gestionan creación, procedures y triggers.
+- Seguridad:
+  - Las contraseñas se hashean en la BD vía trigger (SHA‑256).
+  - Cookie de autenticación configurada con HttpOnly en [`{MarketWeight}.mvc/Program.cs`]( {MarketWeight}.mvc/Program.cs ).
+  - Validaciones en DTOs y ModelState en controladores.
+- Repositorios: patrones sencillos ADO/Dapper para ejecutar procedures y consultas parametrizadas — evita SQL injection.
+- Tests: proyecto de pruebas con conexión a BD configurable en `appSettings.json` dentro de `src/MarketWeight.Ado.Dapper.Test` — clase base [`MarketWeight.Ado.Dapper.Test.TestBase`](src/MarketWeight.Ado.Dapper.Test/TestBase.cs).
 
-Clonar el repositorio github, desde Github Desktop o ejecutar en la terminal o CMD:
+## Cómo ejecutar
+1. Clonar el repo:
+```sh
+git clone  https://github.com/Dieguitoo06/MarketWeight
 ```
-git clone https://github.com/carlete-afk/MarketWeight
-```
-
-### Pre-requisitos 📋
-
-- [Visual Studio Code](https://code.visualstudio.com/download)
-- [.NET 8.0](https://dotnet.microsoft.com/es-es/download/dotnet/8.0).
-
-- [MySQL WorkBench](https://dev.mysql.com/downloads/workbench/)
-
-
-## Despliegue 📦
-
-- Para poder correr estos scripts ejecuta el siguiente comando dentro de la terminal integrada de la carpeta `scripts.sql`
-
-```shell
+2. Crear la base de datos (desde la carpeta `scripts sql`):
+```sh
 mysql -u tuUsuario -p
-```
-
-- Una vez loggeado ejecute el siguiente comando para crear la BD.
-
-```shell
 source Install.sql
 ```
+(usa [scripts sql/Install.sql](scripts sql/Install.sql) y [scripts sql/01 MarketWeight-ddl.sql](scripts sql/01 MarketWeight-ddl.sql))
 
-- Ahora desde la carpeta `MarketWeight.Ado.Dapper.Test` puede correr cualquier prueba o en la terminal integrada escribir este comando para correrlas al mismo tiempo.
+3. Configurar cadena de conexión:
+- Editar `{MarketWeight}.mvc/appsettings.Development.json` o la variable de entorno con la conexión MySQL usada por la aplicación.
 
-```shell
-dotnet test -v d
+4. Ejecutar la aplicación:
+```sh
+dotnet run --project {MarketWeight}.mvc
 ```
 
-## Construido con 🛠️
+5. Ejecutar pruebas:
+```sh
+dotnet test src/MarketWeight.Ado.Dapper.Test -v d
+```
 
-- C# 12.0
-- MySQL 8.0
-- Visual Studio Code.
+## Notas para la presentación
+- Explicar flujo de creación de usuario: formulario → controlador → repositorio → procedure SQL → trigger hash. (Ver [GUIA_RESPUESTAS.md](GUIA_RESPUESTAS.md) para guión).
+- Resaltar: uso de triggers para hash, procedures para transacciones y configuración de seguridad de cookies en [`{MarketWeight}.mvc/Program.cs`]( {MarketWeight}.mvc/Program.cs ).
 
-## Versionado 📌
+## Recursos y referencias
+- Scripts de instalación: [scripts sql/Install.sql](scripts sql/Install.sql)  
+- DDL: [scripts sql/01 MarketWeight-ddl.sql](scripts sql/01 MarketWeight-ddl.sql)  
+- Clase de pruebas: [`MarketWeight.Ado.Dapper.Test.TestBase`](src/MarketWeight.Ado.Dapper.Test/TestBase.cs)  
+- Program (configuración): [{MarketWeight}.mvc/Program.cs]({MarketWeight}.mvc/Program.cs)  
+- Licencia: [LICENSE](LICENSE)
 
-Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/tags).
+---
 
-## Autores ✒️
-
-- **Carlos Bello** - [carlete-afk](https://github.com/carlete-afk)
-- **Walter Benítez** - [Walter-Cooking](https://github.com/Walter-Cooking)
-- **Jorge Casco** - [jorge-link](https://github.com/jorge-link)
-- **Guido Gavilán** - [guido-rar](https://github.com/guido-rar)
-- **Francisco García** - [SirFrancis2007](https://github.com/SirFrancis2007) 
-
-## Licencia 📄
-
-Este proyecto está bajo la Licencia Creative Commons Attribution 4.0 International - mira el archivo [LICENSE](LICENSE) para detalles.
+Mantener este README actualizado al realizar cambios en la DB o en la configuración de conexión.
+// ...existing code...
