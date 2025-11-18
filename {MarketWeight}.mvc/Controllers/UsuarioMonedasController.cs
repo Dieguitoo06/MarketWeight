@@ -15,21 +15,16 @@ public class UsuarioMonedasController : Controller
 {
     private readonly IRepoUsuario _repoUsuario;
 
-    /// <summary>
-    /// Constructor que inyecta el repositorio de usuarios
-    /// </summary>
+
     public UsuarioMonedasController(IRepoUsuario repoUsuario)
     {
         _repoUsuario = repoUsuario;
     }
 
-    /// <summary>
-    /// GET: Lista todas las monedas en las billeteras de todos los usuarios
-    /// </summary>
     public IActionResult Index()
     {
-        var registros = _repoUsuario.ObtenerUsuarioMoneda();
-        var model = registros.Select(r => new UsuarioMonedaDto
+            var registros = _repoUsuario.ObtenerUsuarioMoneda();
+            var model = registros.Select(r => new UsuarioMonedaDto
         {
             IdUsuario = r.idUsuario,
             IdMoneda = r.idMoneda,
@@ -38,11 +33,6 @@ public class UsuarioMonedasController : Controller
         return View(model);
     }
 
-    /// <summary>
-    /// GET: Muestra los detalles de una moneda específica en la billetera de un usuario
-    /// </summary>
-    /// <param name="idUsuario">ID del usuario propietario de la moneda</param>
-    /// <param name="idMoneda">ID de la moneda en la billetera</param>
     public IActionResult Details(uint idUsuario, uint idMoneda)
     {
         var registros = _repoUsuario.ObtenerUsuarioMoneda();

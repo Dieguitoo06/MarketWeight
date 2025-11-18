@@ -1,6 +1,6 @@
 // ...existing code...
 # E.T. Nº12 — MarketWeight
-**Administración y Gestión de Bases de Datos — 5° 8°**
+**Administración y Gestión de Bases de Datos — 6° 8°**
 
 Autores:
 - Diego Quintero — [Dieguitoo06](https://github.com/Dieguitoo06)  
